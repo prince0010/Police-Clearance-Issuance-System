@@ -1,0 +1,94 @@
+PRIORITY -- in the git bash use the npm install --save-dev electron to download the node_modules it is important in this project. I cant push the node modules since it exceeds the 100mb file and i still dont know how to use *git lfs (command to install lfs - git lfs install)* or in  https://git-lfs.github.com.
+
+
+1st npm init to have the package.json file
+- npm init
+
+Ex. 
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "description": "Hello World!",
+  "main": "main.js",
+  "author": "Jane Doe",
+  "license": "MIT"
+}
+
+-----------------------------------------------------------
+2st npm init to donwload the node modules of electron and its package-lock.json
+- npm install --save-dev electron
+
+{
+  "scripts": {
+    "start": "electron ."
+  }
+}
+
+-----------------------------------------------------------
+
+- Create index.html and main.js file
+
+-----------------------------------------------------------
+
+- main.js
+
+// Modules to control application life and create native browser window
+const { app, BrowserWindow } = require('electron')
+
+// Create the browser window.
+const createWindow = () => {
+    const win = new BrowserWindow({
+        width: 700,
+        height: 500,
+        frame: true,
+        autoHideMenuBar: true,
+        icon: './img/electron.ico'
+    })
+    // Loading the index.html of the app.
+    win.loadFile('./index.html')
+}
+
+// Initialization and is ready to create browser windows.
+app.whenReady().then(() => {
+    createWindow()
+})
+
+// Quit when all windows are closed,
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
+})
+
+-----------------------------------------------------------
+
+Bundling Source Code into an .exe
+
+- npm i --save-dev electron-builder
+
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+
+then add this jason data:
+
+"build": {
+    "appId": "Electron",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "./img/electron.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "./img/electron.ico",
+      "uninstallerIcon": "./img/electron.ico",
+      "uninstallDisplayName": "Electron-uninstaller",
+      "license": "license.md",
+      "allowToChangeInstallationDirectory": false
+    }
+  },
+
+then run this command "npm run build"
